@@ -9,9 +9,12 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 
 # Install CPU-only PyTorch first (skip CUDA deps = ~3GB savings)
+# Clean caches after each step to avoid running out of disk space
 RUN uv venv && \
     uv pip install torch --index-url https://download.pytorch.org/whl/cpu && \
-    uv sync --frozen --no-install-package torch
+    rm -rf /root/.cache/uv /root/.cache/pip && \
+    uv sync --frozen --no-install-package torch --no-install-package triton && \
+    rm -rf /root/.cache/uv /root/.cache/pip
 
 # Copy the rest of the project
 COPY . .
