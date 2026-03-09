@@ -1,0 +1,43 @@
+{
+    "title": "Autoresearch Training Input",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "depth": {
+            "title": "Model Depth",
+            "type": "integer",
+            "description": "Number of transformer layers. More layers = larger model but slower training.",
+            "default": 4,
+            "minimum": 1,
+            "maximum": 24,
+            "editor": "number"
+        },
+        "timeBudget": {
+            "title": "Time Budget (seconds)",
+            "type": "integer",
+            "description": "Training time budget in seconds. Default is 300 (5 minutes).",
+            "default": 300,
+            "minimum": 60,
+            "maximum": 3600,
+            "editor": "number"
+        },
+        "numShards": {
+            "title": "Number of Data Shards",
+            "type": "integer",
+            "description": "Number of training data shards to download. More shards = more data variety but longer preparation.",
+            "default": 10,
+            "minimum": 2,
+            "maximum": 6542,
+            "editor": "number"
+        },
+        "deviceBatchSize": {
+            "title": "Device Batch Size",
+            "type": "integer",
+            "description": "Batch size per device. Reduce if running out of memory.",
+            "default": 8,
+            "minimum": 1,
+            "maximum": 64,
+            "editor": "number"
+        }
+    }
+}

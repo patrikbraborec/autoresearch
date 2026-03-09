@@ -1,0 +1,51 @@
+{
+    "actorSpecification": 1,
+    "name": "autoresearch",
+    "title": "Autoresearch - Autonomous LLM Training",
+    "description": "Autonomous AI research platform for LLM training experimentation. Runs a GPT pretraining experiment with configurable depth and time budget, reporting training progress and final validation metrics.",
+    "version": "1.0",
+    "meta": {
+        "templateId": "python_empty",
+        "generatedBy": "Claude Code with Claude Opus 4.6"
+    },
+    "input": "./input_schema.json",
+    "dockerfile": "../Dockerfile",
+    "storages": {
+        "dataset": {
+            "actorSpecification": 1,
+            "title": "Training Results",
+            "views": {
+                "results": {
+                    "title": "Training Results",
+                    "transformation": {
+                        "fields": [
+                            "status",
+                            "val_bpb",
+                            "training_seconds",
+                            "total_tokens_M",
+                            "num_steps",
+                            "num_params_M",
+                            "depth",
+                            "model_weights_url",
+                            "model_config_url"
+                        ]
+                    },
+                    "display": {
+                        "component": "table",
+                        "properties": {
+                            "status": { "label": "Status", "format": "text" },
+                            "val_bpb": { "label": "Val BPB", "format": "number" },
+                            "training_seconds": { "label": "Training (s)", "format": "number" },
+                            "total_tokens_M": { "label": "Tokens (M)", "format": "number" },
+                            "num_steps": { "label": "Steps", "format": "number" },
+                            "num_params_M": { "label": "Params (M)", "format": "number" },
+                            "depth": { "label": "Depth", "format": "number" },
+                            "model_weights_url": { "label": "Weights Download", "format": "link" },
+                            "model_config_url": { "label": "Config Download", "format": "link" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

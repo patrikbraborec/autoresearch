@@ -294,12 +294,9 @@ def make_dataloader(tokenizer, B, T, split, buffer_size=1000):
 
     # Pre-allocate buffers: [inputs (B*T) | targets (B*T)]
     row_buffer = torch.empty((B, row_capacity), dtype=torch.long)
-    cpu_buffer = torch.empty(2 * B * T, dtype=torch.long, pin_memory=True)
-    gpu_buffer = torch.empty(2 * B * T, dtype=torch.long, device="cuda")
-    cpu_inputs = cpu_buffer[:B * T].view(B, T)
-    cpu_targets = cpu_buffer[B * T:].view(B, T)
-    inputs = gpu_buffer[:B * T].view(B, T)
-    targets = gpu_buffer[B * T:].view(B, T)
+    cpu_buffer = torch.empty(2 * B * T, dtype=torch.long)
+    inputs = cpu_buffer[:B * T].view(B, T)
+    targets = cpu_buffer[B * T:].view(B, T)
 
     while True:
         for row_idx in range(B):
@@ -330,9 +327,8 @@ def make_dataloader(tokenizer, B, T, split, buffer_size=1000):
                     row_buffer[row_idx, pos:pos + remaining] = torch.tensor(doc[:remaining], dtype=torch.long)
                     pos += remaining
 
-        cpu_inputs.copy_(row_buffer[:, :-1])
-        cpu_targets.copy_(row_buffer[:, 1:])
-        gpu_buffer.copy_(cpu_buffer, non_blocking=True)
+        inputs.copy_(row_buffer[:, :-1])
+        targets.copy_(row_buffer[:, 1:])
         yield inputs, targets, epoch
 
 # ---------------------------------------------------------------------------
@@ -348,7 +344,7 @@ def evaluate_bpb(model, tokenizer, batch_size):
     are excluded from both sums.
     Uses fixed MAX_SEQ_LEN so results are comparable across configs.
     """
-    token_bytes = get_token_bytes(device="cuda")
+    token_bytes = get_token_bytes(device="cpu")
     val_loader = make_dataloader(tokenizer, batch_size, MAX_SEQ_LEN, "val")
     steps = EVAL_TOKENS // (batch_size * MAX_SEQ_LEN)
     total_nats = 0.0

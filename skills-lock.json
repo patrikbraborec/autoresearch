@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "skills": {
+    "apify-actor-development": {
+      "source": "apify/agent-skills",
+      "sourceType": "github",
+      "computedHash": "be11a04c3e3e9d50183a32e92667cc6fda353ad3e06e502f7a21c1139dcbeec4"
+    },
+    "apify-actorization": {
+      "source": "apify/agent-skills",
+      "sourceType": "github",
+      "computedHash": "b1b22a4c6a6ab2e302985be473d35b3e8ee8649a1cb0b76a8aa912970444831b"
+    }
+  }
+}
