@@ -23,5 +23,6 @@ dev/
 results.tsv
 
 # Other
-.claude
+.claude/*
+!.claude/skills/
 .agents
